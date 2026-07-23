@@ -11,7 +11,7 @@ import { usuarioLogado, login, logout } from './core/auth';
 })
 export class App {
   protected readonly title = signal('e-commerce');
-  nomeLoja = 'Feira do Rolo'; //nome do e-commerce
+  nomeLoja = 'Mini box são Francisco'; //nome do e-commerce
   usuarioLogado = usuarioLogado;
   login = login;
   logout = logout;

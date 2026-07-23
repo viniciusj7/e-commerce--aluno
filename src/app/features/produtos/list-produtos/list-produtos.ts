@@ -1,24 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { signal } from '@angular/core';
 import { Produto } from '../produto/produto';
 import { computed } from '@angular/core';
 import { PrecoFormatadoPipe } from '../../../shared/pipes/preco-formatado-pipe';
 import { effect } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
+import { produtoService } from '../produto/produtos.service';
+import { Inject } from '@angular/core';
 @Component({
   selector: 'app-list-produtos',
-  imports: [Produto, PrecoFormatadoPipe, UpperCasePipe],
+  imports: [Produto,UpperCasePipe,PrecoFormatadoPipe],
   templateUrl: './list-produtos.html',
   styleUrl: './list-produtos.css',
 })
 export class ListProdutos {
-  produtos = signal([
-    {nome: 'Teclado Gamer', preco:149.00},
-    {nome: 'Mouse Gamer', preco:299.99},
-    {nome: 'Monitor Gamer', preco:1599.99},
-    {nome: 'Desktop Gamer', preco:4999.99},
-    {nome: 'Headset Gamer', preco:699.99}
-  ]);
+  //! remover a lista de produtos, dados carregados via API Fakestoreapi
+  produtos = signal <
+  {nome: string ; preco: number } []> ([]);
+//? criar estado de carregamento
+// ** true: requisição em andamento, exibir dados no template
+//! false: esconder indicador e exibir a lista de produtos 
+  carregando = signal(true);
+  //! cria método para a requisição dos produtos 
+  carregarProdutos(){
+    this.carregando.set(true);
+
+    this.produtoService.buscarProduto().subscribe({
+      next: (dados) => {
+        const produtos = this.produtoService.transformarProdutos(dados);
+        this.produtos.set(produtos);
+        this.carregando.set(false);
+      },
+      error: (erro) => {
+        console.error ('Erro ao carregar os Produtos:', erro);
+        this.carregando.set(false);
+      },
+    });
+}
+  
+
 exibirProduto(nome:string){
   //console.log('Produto selecionado: ', nome);
   this.produtoSelecionado.set(nome);
@@ -44,7 +64,13 @@ substituirProdutos(){
     {nome:'Headset', preco:25}
   ]);
 }
+//! injetar httpCliente dentro de construct, reestruturar construct !!!
  constructor(){
+  //!Carregar a API
+  this.carregarProdutos();
+  
+
+  //! efects continuam iguais
   effect(() =>{
     console.log('Lista de produtos alterados: ', this.produtos());
   });
@@ -64,10 +90,19 @@ substituirProdutos(){
     ...listaAtual,produto
   ]);
 
+
   }
+  private produtoService =  inject (produtoService) 
+
+
+
+
+
+
+
   quantidadeCarrinho = computed(() => this.carrinho().length);
   totalCarrinho = computed(() => { 
     return this.carrinho().reduce((total, item) =>
        total + item.preco,0);
   });
- }
+}

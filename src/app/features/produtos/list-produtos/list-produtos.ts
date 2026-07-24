@@ -23,7 +23,9 @@ export class ListProdutos {
   carregando = signal(true);
   //! cria método para a requisição dos produtos 
   carregarProdutos(){
-    this.carregando.set(true);
+    this.carregando.set(true); //
+
+    this.erro.set (null); //limpa o erro anterio
 
     this.produtoService.buscarProduto().subscribe({
       next: (dados) => {
@@ -33,6 +35,7 @@ export class ListProdutos {
       },
       error: (erro) => {
         console.error ('Erro ao carregar os Produtos:', erro);
+        this.erro.set('Erro ao carregar Produto. Verifique sua conexão e tente novamente!');
         this.carregando.set(false);
       },
     });
@@ -85,6 +88,9 @@ substituirProdutos(){
  }
  produtoSelecionado = signal <string | null> (null);
  carrinho = signal <{ nome: string; preco: number}[]>([]);
+
+ erro = signal <string | null> (null);
+
  adicionarAoCarrinho(produto: {nome: string; preco: number}){
   this.carrinho.update(listaAtual => [
     ...listaAtual,produto

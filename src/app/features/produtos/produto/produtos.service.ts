@@ -13,7 +13,8 @@ import { Inject } from "@angular/core";
  export class produtoService {
   private http = inject(HttpClient); 
 
-  private API = 'https://fakestoreapi.com/products';
+  private API = 'https://fakestoreapi.com/products'; //! API oficial e funcionando/ nao mecher 
+  //private API = 'https://fakestoreapi.com/products-erro'; //! o errado
 
   buscarProduto(){
     return this.http.get<ProdutoApi []>(this.API);

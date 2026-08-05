@@ -21,6 +21,7 @@
 
 <hr>
 
+<section class="grid-produtos">
 @for(item of produtos(); track $index){
     <app-produto
         [nome] = "item.nome"
@@ -31,7 +32,9 @@
         ></app-produto>
         <!-- <button (click)="adicionarAoCarrinho(item)">Adicionar ao Carrinho</button> feat -->
 }
-   }
+   
+</section>
+}
 <hr>
 <h2>Carrinho</h2>
 @for (item of carrinho(); track $index){

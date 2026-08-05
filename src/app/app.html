@@ -9,10 +9,18 @@
 </nav> -->
 <app-header></app-header>
 <!-- Controle de auteticação temporária-->
-<main style=" padding: 20px">
-<section class="auth-temp" style="margin-bottom: 20px">
+<main class="container-principal">
+
+<section class="bloco-controle">
+
 <button mat-raised-button (click)="login()">Login</button>
 <button mat-stroked-button (click)="logout()">Logout</button></section>
+
+
+
+
+
+
 <p>Status: {{ usuarioLogado() ? 'Logado' : 'Deslogado'}}</p>
 </main>
 <router-outlet></router-outlet>

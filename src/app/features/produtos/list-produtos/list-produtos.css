@@ -11,7 +11,7 @@
     }
 }
 /*Breakpoints: Desktop ate 900px*/
-@media(win-width:900px) {
+@media(min-width:900px) {
     .grid-produtos{
         grid-template-columns: repeat(3,1fr);/* em 900px, cria */
     }

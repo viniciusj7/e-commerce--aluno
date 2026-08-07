@@ -1,8 +1,44 @@
 <h2>Checkout</h2>
 <form [formGroup]="formulario">
     <p><input type="text" formControlName = "nome" placeholder="Nome"></p>
-    <p><input type="email" formControlName = "email" placeholder="E-mail"></p>
-    <p><input type="text" formControlName = "endereco" placeholder="Endereço"></p>
+    @if(formulario.get('nome')?.touched && formulario.get('nome')?.invalid){
+    @if(formulario.get('nome')?.errors?.['required']){
+        <br>
+        <small style="color: red;">Nome é obrigatório</small>
+      }
+        }
+@if(formulario.get('nome')?.errors?.['minlength']){
+        <small style="color: red;">Nome deve ter no mínimo 3 caracteres</small>
+    }
+    @if(formulario.get('nome')?.errors?.['numeroInvalido']){
+        <small style="color: red;">Nome não pode conter números</small>
+    }
 
-    <button type="button" (click)="finalizar()">Finalizar Compra</button>
+    <p><input type="email" formControlName = "email" placeholder="E-mail"></p>
+
+    @if(formulario.get('email')?.touched && formulario.get('email')?.invalid){
+         @if(formulario.get('email')?.errors?.['required']){
+        <small style="color: red;">E-mail é obrigatório</small>
+    }
+    @if(formulario.get('email')?.errors?.['email']){
+        <small style="color: red;">E-mail inválido</small>
+    }
+ }
+
+
+    <p><input type="text" formControlName = "endereco" placeholder="Endereço"></p>
+    @if(formulario.get('endereco')?.touched && formulario.get('endereco')?.invalid){
+        @if(formulario.get('endereco')?.errors?.['required']){
+        <small style="color: red;">Endereço é obrigatório</small>
+      }
+        }
+    @if(formulario.get('endereco')?.errors?.['minlength']){
+        <small style="color: red;">Endereço deve ter no mínimo 5 caracteres</small>
+    }
+     
+    <br>
+
+
+
+    <button type="button" (click)="finalizar()" [disabled]="formulario.invalid">Finalizar Compra</button>
 </form>
